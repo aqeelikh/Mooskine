@@ -14,9 +14,11 @@ class NoteDetailsViewController: UIViewController {
 
     /// The note being displayed and edited
     var note: Note!
-
     /// A closure that is run when the user asks to delete the current note
     var onDelete: (() -> Void)?
+    
+    /// A data controlp
+    var dataController:DataController! 
 
     /// A date formatter for the view controller's title text
     let dateFormatter: DateFormatter = {
@@ -24,11 +26,12 @@ class NoteDetailsViewController: UIViewController {
         df.dateStyle = .medium
         return df
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.title = dateFormatter.string(from: note.creationDate)
+        if let creationDate = note.creationDate {
+            navigationItem.title = dateFormatter.string(from: creationDate)
+        }
         textView.text = note.text
     }
 
@@ -59,5 +62,6 @@ extension NoteDetailsViewController {
 extension NoteDetailsViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         note.text = textView.text
+        try? dataController.viewContext.save()
     }
 }
