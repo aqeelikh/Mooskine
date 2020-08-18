@@ -18,6 +18,3 @@ iOS Persistence and Core Data teach common persistence techniques using Apple's 
 
 Generally speaking, most projects can run without any additional setup. However, consult the iOS Persistence and Core Data course for more information.
 
-## Maintainers
-
-@OwenLaRosa
