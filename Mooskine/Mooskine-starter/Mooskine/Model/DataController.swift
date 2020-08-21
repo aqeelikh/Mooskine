@@ -12,9 +12,21 @@ import CoreData
 class DataController {
     
     let persistentContainer: NSPersistentContainer
-     
+    var backgroundContext: NSManagedObjectContext!
+    
     init(modelName:String) {
         self.persistentContainer = NSPersistentContainer(name: modelName)
+        
+    }
+    
+    func configerContexts() {
+        backgroundContext = persistentContainer.newBackgroundContext()
+        
+        viewContext.automaticallyMergesChangesFromParent = true
+        backgroundContext.automaticallyMergesChangesFromParent = true
+        
+        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump 
     }
     
     var viewContext: NSManagedObjectContext {
@@ -27,6 +39,7 @@ class DataController {
                 fatalError(error!.localizedDescription)
             }
             self.autoSaveViewContext()
+            self.configerContexts()
         completion?()
         }
     }
